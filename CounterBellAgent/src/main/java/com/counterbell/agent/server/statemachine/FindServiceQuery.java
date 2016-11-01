@@ -1,7 +1,7 @@
 package com.counterbell.agent.server.statemachine;
 
 import com.counterbell.agent.common.CounterBellService;
-import com.counterbell.agent.common.searchcriteria.CounterBellServiceSearchCriteria;
+import com.counterbell.agent.common.searchcriteria.ServiceSearchCriteria;
 import io.atomix.copycat.Query;
 
 /**
@@ -9,17 +9,17 @@ import io.atomix.copycat.Query;
  * Created by matteo on 23/10/16.
  */
 public class FindServiceQuery implements Query<CounterBellService> {
-    CounterBellServiceSearchCriteria searchCriteria;
+    ServiceSearchCriteria searchCriteria;
 
-    public FindServiceQuery(CounterBellServiceSearchCriteria searhCriteria) {
+    public FindServiceQuery(ServiceSearchCriteria searhCriteria) {
          this.searchCriteria = searhCriteria;
     }
 
-    public CounterBellServiceSearchCriteria getSearchCriteria() {
+    public ServiceSearchCriteria getSearchCriteria() {
         return searchCriteria;
     }
 
-    public void setSearchCriteria(CounterBellServiceSearchCriteria searchCriteria) {
+    public void setSearchCriteria(ServiceSearchCriteria searchCriteria) {
         this.searchCriteria = searchCriteria;
     }
 }

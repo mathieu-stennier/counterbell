@@ -1,11 +1,13 @@
 package com.counterbell.agent.server;
 
+import com.counterbell.agent.common.AgentConfiguration;
 import com.counterbell.agent.server.statemachine.ServicesRegistryStateMachine;
 import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.netty.NettyTransport;
 import io.atomix.copycat.server.CopycatServer;
 import io.atomix.copycat.server.storage.Storage;
 import io.atomix.copycat.server.storage.StorageLevel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -20,6 +22,9 @@ import java.net.UnknownHostException;
  */
 @Configuration
 public class CounterBellServer {
+
+    @Autowired
+    private AgentConfiguration config;
 
     @Bean(name = "counterBellServerNode", destroyMethod = "shutdown")
     @Scope("singleton")
