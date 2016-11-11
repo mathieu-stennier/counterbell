@@ -1,35 +1,37 @@
 package com.counterbell.agent.server.statemachine.repository;
 
 import com.counterbell.agent.common.CounterBellServiceInfo;
+import com.counterbell.agent.common.searchcriteria.CounterBellServiceSearchCriteria;
 
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 11/11/16.
  */
-public class OrientDBCounterBellServiceInfoRepository implements CounterBellServiceInfoRepository{
+public class OrientDBCounterBellServiceInfoRepository extends CounterBellServiceInfoRepository{
+
 
     @Override
-    public void create(CounterBellServiceInfo serviceInfo) {
+    public void create(String containerIdentifier, CounterBellServiceInfo serviceInfo) {
 
     }
 
     @Override
-    public void update(CounterBellServiceInfo serviceInfo) {
+    public void update(String containerIdentifier, CounterBellServiceInfo serviceInfo) {
 
     }
 
     @Override
-    public void delete(CounterBellServiceInfo serviceInfo) {
+    public void delete(String containerIdentifier, CounterBellServiceInfo serviceInfo) {
 
     }
 
     @Override
-    public CounterBellServiceInfo findByAccountAndName(Long accountId, String name) {
-        return null;
+    public boolean exists(String containerIdentifier, String serviceName) {
+        return false;
     }
 
     @Override
-    public CounterBellServiceInfo findByAccountAndType(Long accountId, String type) {
+    public CounterBellServiceInfo find(CounterBellServiceSearchCriteria searchCriteria) {
         return null;
     }
 }
