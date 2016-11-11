@@ -1,31 +1,39 @@
 package com.counterbell.agent.server.statemachine;
 
-import com.counterbell.agent.common.CounterBellService;
+import com.counterbell.agent.common.CounterBellServiceInfo;
+import com.counterbell.agent.server.statemachine.repository.CounterBellServiceInfoRepository;
+import com.counterbell.agent.server.statemachine.repository.OrientDBCounterBellServiceInfoRepository;
 import io.atomix.copycat.server.Commit;
 import io.atomix.copycat.server.StateMachine;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
  */
 public class ServicesRegistryStateMachine extends StateMachine {
-    Map<String,CounterBellService> serviceRegistryMap = new HashMap<>();
+
+    private CounterBellServiceInfoRepository serviceInfoRepository;
+
+    public ServicesRegistryStateMachine(){
+        this.serviceInfoRepository = new OrientDBCounterBellServiceInfoRepository();
+    }
+
+    public ServicesRegistryStateMachine(CounterBellServiceInfoRepository serviceInfoRepository){
+        this.serviceInfoRepository = serviceInfoRepository;
+    }
 
     public Object registerService(Commit<RegisterServiceCommand> commit){
         try {
-            serviceRegistryMap.put(commit.operation().getName(), commit.operation().getService());
+            serviceInfoRepository.createOrUpdate(commit.operation().getRequestMetaData().getContainerIdentifier(),commit.operation().getServiceInfos());
             return null;
         } finally {
             commit.close();
         }
     }
 
-    public CounterBellService findService(Commit<FindServiceQuery> commit){
+    public CounterBellServiceInfo findService(Commit<FindServiceQuery> commit){
         try {
-            return serviceRegistryMap.get(commit.operation().getSearchCriteria().getName());
+            return serviceInfoRepository.find(commit.operation().getSearchCriteria());
         } finally {
             commit.close();
         }

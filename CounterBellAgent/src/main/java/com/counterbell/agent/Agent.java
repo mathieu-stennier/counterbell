@@ -1,6 +1,5 @@
 package com.counterbell.agent;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class Agent {
-    @Value("${server.port}")
-    private int serverPort;
+
 
 }

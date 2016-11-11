@@ -23,10 +23,10 @@ public class CounterBellAgentApplication {
         Class[] sources = null;
         List<String> agentArgs = new ArrayList<String>(Arrays.asList(args));
         if (params.get("agentType").equals(AgentType.COUNTER_BELL_CLIENT)) {
-            sources = new Class[]{CounterBellAgentApplication.class, Agent.class, CounterBellClient.class};
+            sources = new Class[]{CounterBellAgentApplication.class, CounterBellClient.class};
             agentArgs.add("--agenttype=" + AgentType.COUNTER_BELL_CLIENT);
         } else {
-            sources = new Class[]{CounterBellAgentApplication.class, Agent.class, CounterBellServer.class};
+            sources = new Class[]{CounterBellAgentApplication.class, CounterBellServer.class};
             agentArgs.add("--agenttype=" + AgentType.COUNTER_BELL_SERVER);
         }
         if(params.containsKey("bootstrap") && (Boolean)params.get("bootstrap")){

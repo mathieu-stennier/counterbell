@@ -1,6 +1,5 @@
 package com.counterbell.agent.client;
 
-import com.counterbell.agent.Agent;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by matteo on 29/10/16.
  */
 @Configuration
-public class CounterBellClient extends Agent {
+public class CounterBellClient {
 
     public CounterBellClient(){
         super();

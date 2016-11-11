@@ -4,10 +4,10 @@ package com.counterbell.agent.common.searchcriteria;
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
  */
-public class ServiceSearchCriteria {
+public class CounterBellServiceSearchCriteria {
     private String name;
 
-    public ServiceSearchCriteria(){
+    public CounterBellServiceSearchCriteria(){
         super();
     }
 

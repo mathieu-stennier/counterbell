@@ -26,6 +26,24 @@ public class AgentConfiguration implements ApplicationContextAware{
 
     private ApplicationContext appContext;
 
+    /**
+     * HTTP Server port
+     */
+    @Value("${server.port}")
+    private int httpServerPort;
+
+    /**
+     * Port to which the cluster server will use for server communications.
+     */
+    @Value("${copycat.talkto.server.port}")
+    private int copycatTalkToServerPort;
+
+    /**
+     * Port to which the cluster server will use for client communications.
+     */
+    @Value("${copycat.talkto.client.port}")
+    private int copycatTalkToClientPort;
+
     @Value("${agenttype}")
     private String _commandLineAgentType;
 
@@ -43,7 +61,7 @@ public class AgentConfiguration implements ApplicationContextAware{
     @PostConstruct
     public void extractCommandLineArgs(){
         this.agentType = AgentType.valueOf(_commandLineAgentType);
-        this.shouldBootstrap = Boolean.getBoolean(_bootstrapCluster);
+        this.shouldBootstrap = Boolean.valueOf(_bootstrapCluster);
         if(_initialMembers.length() != 0){
             for(String adr : _initialMembers.split(";")){
                 if(!adr.matches(ipAndPortPattern)){
@@ -65,16 +83,23 @@ public class AgentConfiguration implements ApplicationContextAware{
         return agentType;
     }
 
-    public void setAgentType(AgentType agentType) {
-        this.agentType = agentType;
-    }
-
     public Boolean getShouldBootstrap() {
         return shouldBootstrap;
     }
 
-    public void setShouldBootstrap(Boolean shouldBootstrap) {
-        this.shouldBootstrap = shouldBootstrap;
+    public int getHttpServerPort() {
+        return httpServerPort;
     }
 
+    public int getCopycatTalkToServerPort() {
+        return copycatTalkToServerPort;
+    }
+
+    public int getCopycatTalkToClientPort() {
+        return copycatTalkToClientPort;
+    }
+
+    public Set<InetSocketAddress> getInitialMembers() {
+        return initialMembers;
+    }
 }
