@@ -2,20 +2,23 @@ package com.counterbell.agent.server.statemachine;
 
 import com.counterbell.agent.common.CounterBellServiceInfo;
 import com.counterbell.agent.server.statemachine.repository.CounterBellServiceInfoRepository;
-import com.counterbell.agent.server.statemachine.repository.OrientDBCounterBellServiceInfoRepository;
+import com.counterbell.agent.server.statemachine.repository.MapDBCounterBellServiceInfoRepository;
 import io.atomix.copycat.server.Commit;
+import io.atomix.copycat.server.Snapshottable;
 import io.atomix.copycat.server.StateMachine;
+import io.atomix.copycat.server.storage.snapshot.SnapshotReader;
+import io.atomix.copycat.server.storage.snapshot.SnapshotWriter;
 
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
  */
-public class ServicesRegistryStateMachine extends StateMachine {
+public class ServicesRegistryStateMachine extends StateMachine implements Snapshottable{
 
     private CounterBellServiceInfoRepository serviceInfoRepository;
 
     public ServicesRegistryStateMachine(){
-        this.serviceInfoRepository = new OrientDBCounterBellServiceInfoRepository();
+        this.serviceInfoRepository = new MapDBCounterBellServiceInfoRepository("/tmp/counterBellDB");
     }
 
     public ServicesRegistryStateMachine(CounterBellServiceInfoRepository serviceInfoRepository){
@@ -37,6 +40,16 @@ public class ServicesRegistryStateMachine extends StateMachine {
         } finally {
             commit.close();
         }
+    }
+
+    @Override
+    public void snapshot(SnapshotWriter snapshotWriter){
+
+    }
+
+    @Override
+    public void install(SnapshotReader snapshotReader) {
+
     }
 }
 

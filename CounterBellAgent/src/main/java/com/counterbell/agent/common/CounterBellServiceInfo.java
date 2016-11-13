@@ -1,12 +1,13 @@
 package com.counterbell.agent.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
  */
-public class CounterBellServiceInfo {
+public class CounterBellServiceInfo implements Serializable{
     private String name;
     private String type;
     private HashMap<String, Object> serviceInfo;

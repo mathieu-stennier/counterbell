@@ -3,7 +3,7 @@ package com.counterbell.agent.server;
 import com.counterbell.agent.common.AgentConfiguration;
 import com.counterbell.agent.server.statemachine.ServicesRegistryStateMachine;
 import com.counterbell.agent.server.statemachine.repository.CounterBellServiceInfoRepository;
-import com.counterbell.agent.server.statemachine.repository.OrientDBCounterBellServiceInfoRepository;
+import com.counterbell.agent.server.statemachine.repository.MapDBCounterBellServiceInfoRepository;
 import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.netty.NettyTransport;
 import io.atomix.copycat.server.CopycatServer;
@@ -34,7 +34,7 @@ public class CounterBellServer {
     @Bean(name = "serviceInfoRepository")
     @Scope("singleton")
     public CounterBellServiceInfoRepository counterBellServiceInfoRepository(){
-        return new OrientDBCounterBellServiceInfoRepository();
+        return new MapDBCounterBellServiceInfoRepository("/mnt/databases/counterBellDB");
     }
 
     @Bean(name = "counterBellServerNode", destroyMethod = "shutdown")
@@ -48,7 +48,7 @@ public class CounterBellServer {
                         .withThreads(4)
                         .build())
                 .withStorage(Storage.builder()
-                        .withDirectory(new File("logs"))
+                        .withDirectory(new File("copycatlogs"))
                         .withStorageLevel(StorageLevel.DISK)
                         .build())
                 .build();

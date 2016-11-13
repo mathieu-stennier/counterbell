@@ -5,10 +5,25 @@ package com.counterbell.agent.common.searchcriteria;
  * Created by matteo on 23/10/16.
  */
 public class CounterBellServiceSearchCriteria {
+    private String containerId;
     private String name;
+    private String type;
 
-    public CounterBellServiceSearchCriteria(){
-        super();
+    public CounterBellServiceSearchCriteria() {
+    }
+
+    public CounterBellServiceSearchCriteria(String containerId, String name, String type) {
+        this.containerId = containerId;
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 
     public String getName() {
@@ -17,5 +32,13 @@ public class CounterBellServiceSearchCriteria {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
