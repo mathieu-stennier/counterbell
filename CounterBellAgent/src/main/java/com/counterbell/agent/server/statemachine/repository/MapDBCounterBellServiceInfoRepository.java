@@ -75,6 +75,12 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
         }
     }
 
+    @Override
+    public Iterable<CounterBellServiceInfo> iterate(String containerIdentifier) {
+        HTreeMap<String,CounterBellServiceInfo> dbServiceInfo = db.hashMap(containerIdentifier, Serializer.STRING, new SerializerCounterBellServiceInfo()).createOrOpen();
+        return dbServiceInfo.getValues();
+    }
+
     public void clean(){
         db.close();
     }

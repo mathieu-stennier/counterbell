@@ -35,13 +35,13 @@ public class AgentConfiguration implements ApplicationContextAware{
     /**
      * Port to which the cluster server will use for server communications.
      */
-    @Value("${copycat.talkto.server.port}")
+    @Value("${copycat.talkto.server.port:-1}")
     private int copycatTalkToServerPort;
 
     /**
      * Port to which the cluster server will use for client communications.
      */
-    @Value("${copycat.talkto.client.port}")
+    @Value("${copycat.talkto.client.port:-1}")
     private int copycatTalkToClientPort;
 
     @Value("${agenttype}")

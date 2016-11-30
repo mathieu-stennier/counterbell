@@ -19,6 +19,7 @@ public abstract class CounterBellServiceInfoRepository {
     public abstract CounterBellServiceInfo find(CounterBellServiceSearchCriteria searchCriteria);
     public abstract void backup(OutputStream out) throws IOException;
     public abstract void restore(InputStream in) throws IOException;
+    public abstract Iterable<CounterBellServiceInfo> iterate(String containerIdentifier);
 
     public void createOrUpdate(String containerIdentifier, CounterBellServiceInfo serviceInfo){
         if(!exists(containerIdentifier,serviceInfo.getName())){

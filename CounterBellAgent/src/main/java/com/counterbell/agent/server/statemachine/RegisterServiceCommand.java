@@ -4,11 +4,13 @@ import com.counterbell.agent.common.CounterBellRequestMetaData;
 import com.counterbell.agent.common.CounterBellServiceInfo;
 import io.atomix.copycat.Command;
 
+import java.io.Serializable;
+
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
  */
-public class RegisterServiceCommand implements Command<Object> {
+public class RegisterServiceCommand implements Command<Object>, Serializable {
     private CounterBellRequestMetaData requestMetaData;
     private CounterBellServiceInfo serviceInfos;
 

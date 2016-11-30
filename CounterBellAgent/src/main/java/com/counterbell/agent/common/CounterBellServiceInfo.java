@@ -41,4 +41,8 @@ public class CounterBellServiceInfo implements Serializable{
     public void setServiceInfo(HashMap<String, Object> serviceInfo) {
         this.serviceInfo = serviceInfo;
     }
+
+    public String toString(){
+        return new StringBuilder().append("[").append(name).append(",").append(type).append(",").append(serviceInfo.toString()).append("]").toString();
+    }
 }

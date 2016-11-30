@@ -9,6 +9,10 @@ import io.atomix.copycat.server.StateMachine;
 import io.atomix.copycat.server.storage.snapshot.SnapshotReader;
 import io.atomix.copycat.server.storage.snapshot.SnapshotWriter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * Copyright CounterBell 2016
  * Created by matteo on 23/10/16.
@@ -44,12 +48,30 @@ public class ServicesRegistryStateMachine extends StateMachine implements Snapsh
 
     @Override
     public void snapshot(SnapshotWriter snapshotWriter){
-
+        try {
+            serviceInfoRepository.backup(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+                    snapshotWriter.writeByte(b);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void install(SnapshotReader snapshotReader) {
-
+        try {
+            serviceInfoRepository.restore(new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    return snapshotReader.readByte();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

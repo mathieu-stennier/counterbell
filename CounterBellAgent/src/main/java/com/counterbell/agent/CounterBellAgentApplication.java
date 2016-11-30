@@ -1,9 +1,9 @@
 package com.counterbell.agent;
 
-import com.counterbell.agent.client.CounterBellClient;
+import com.counterbell.agent.client.CounterBellClientConfiguration;
 import com.counterbell.agent.common.AgentType;
 import com.counterbell.agent.common.exception.InvalidParameterException;
-import com.counterbell.agent.server.CounterBellServer;
+import com.counterbell.agent.server.CounterBellServerConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -22,11 +22,11 @@ public class CounterBellAgentApplication {
         Map<String, Object> params = extractAndValidateCounterBellCommandLineParams(args);
         Class[] sources = null;
         List<String> agentArgs = new ArrayList<String>(Arrays.asList(args));
-        if (params.get("agentType").equals(AgentType.COUNTER_BELL_CLIENT)) {
-            sources = new Class[]{CounterBellAgentApplication.class, CounterBellClient.class};
+        if (params.get("agentType").equals("client")) {
+            sources = new Class[]{CounterBellAgentApplication.class, CounterBellClientConfiguration.class};
             agentArgs.add("--agenttype=" + AgentType.COUNTER_BELL_CLIENT);
         } else {
-            sources = new Class[]{CounterBellAgentApplication.class, CounterBellServer.class};
+            sources = new Class[]{CounterBellAgentApplication.class, CounterBellServerConfiguration.class};
             agentArgs.add("--agenttype=" + AgentType.COUNTER_BELL_SERVER);
         }
         if(params.containsKey("bootstrap") && (Boolean)params.get("bootstrap")){
