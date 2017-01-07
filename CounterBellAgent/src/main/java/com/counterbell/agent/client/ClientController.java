@@ -11,7 +11,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,6 +35,11 @@ public class ClientController implements ApplicationContextAware {
         copycatClient.submit(new RegisterServiceCommand(metaData,serviceInfo)).join();
         Object value = copycatClient.submit(new FindServiceQuery(metaData, new CounterBellServiceSearchCriteria("1","testservice","mysql"))).join();
         return value.toString();
+    }
+
+    @RequestMapping(value = "/{containerId}/services/", method = RequestMethod.GET, produces = "application/json")
+    public String services(){
+
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

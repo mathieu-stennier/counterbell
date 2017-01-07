@@ -33,7 +33,7 @@ public class CounterBellServerConfiguration {
     @Autowired
     private AgentConfiguration config;
 
-    @Bean(name = "serviceInfoRepository")
+    @Bean(name = "serviceInfoRepository", destroyMethod = "clean")
     @Scope("singleton")
     public CounterBellServiceInfoRepository counterBellServiceInfoRepository(){
         return new MapDBCounterBellServiceInfoRepository("/tmp/counterBellDB-"+config.getHttpServerPort());

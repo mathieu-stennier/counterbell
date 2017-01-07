@@ -8,6 +8,7 @@ import io.atomix.copycat.server.Snapshottable;
 import io.atomix.copycat.server.StateMachine;
 import io.atomix.copycat.server.storage.snapshot.SnapshotReader;
 import io.atomix.copycat.server.storage.snapshot.SnapshotWriter;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import java.io.OutputStream;
  * Created by matteo on 23/10/16.
  */
 public class ServicesRegistryStateMachine extends StateMachine implements Snapshottable{
+
+    Logger logger  = Logger.getLogger(ServicesRegistryStateMachine.class);
 
     private CounterBellServiceInfoRepository serviceInfoRepository;
 
@@ -32,6 +35,7 @@ public class ServicesRegistryStateMachine extends StateMachine implements Snapsh
     public Object registerService(Commit<RegisterServiceCommand> commit){
         try {
             serviceInfoRepository.createOrUpdate(commit.operation().getRequestMetaData().getContainerIdentifier(),commit.operation().getServiceInfos());
+            logger.info("Received register command from session '"+commit.session()+"'");
             return null;
         } finally {
             commit.close();
@@ -40,6 +44,7 @@ public class ServicesRegistryStateMachine extends StateMachine implements Snapsh
 
     public CounterBellServiceInfo findService(Commit<FindServiceQuery> commit){
         try {
+            logger.info("Find service command from session '"+commit.session()+"'");
             return serviceInfoRepository.find(commit.operation().getSearchCriteria());
         } finally {
             commit.close();
@@ -49,6 +54,7 @@ public class ServicesRegistryStateMachine extends StateMachine implements Snapsh
     @Override
     public void snapshot(SnapshotWriter snapshotWriter){
         try {
+            logger.info("Taking snapshot");
             serviceInfoRepository.backup(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
@@ -63,6 +69,7 @@ public class ServicesRegistryStateMachine extends StateMachine implements Snapsh
     @Override
     public void install(SnapshotReader snapshotReader) {
         try {
+            logger.info("installing snapshot");
             serviceInfoRepository.restore(new InputStream() {
                 @Override
                 public int read() throws IOException {

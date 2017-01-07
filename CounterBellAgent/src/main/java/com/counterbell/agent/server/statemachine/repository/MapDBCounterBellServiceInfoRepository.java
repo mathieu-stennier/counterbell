@@ -3,6 +3,7 @@ package com.counterbell.agent.server.statemachine.repository;
 import com.counterbell.agent.common.CounterBellServiceInfo;
 import com.counterbell.agent.common.searchcriteria.CounterBellServiceSearchCriteria;
 import com.counterbell.agent.common.utils.IOUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.mapdb.*;
 import org.mapdb.serializer.GroupSerializerObjectArray;
@@ -14,6 +15,8 @@ import java.io.*;
  * Created by matteo on 13/11/16.
  */
 public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInfoRepository {
+
+    Logger logger = Logger.getLogger(MapDBCounterBellServiceInfoRepository.class);
     DB db = null;
     String dbFile="";
 
@@ -24,6 +27,7 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
     private void initializeDatabase(String file){
         db = DBMaker.fileDB(file).make();
         dbFile = file;
+        logger.info("Service repository initialized (filesystem:"+file+")");
     }
 
     @Override
@@ -31,6 +35,7 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
         HTreeMap<String,CounterBellServiceInfo> dbServiceInfo = db.hashMap(containerIdentifier, Serializer.STRING, new SerializerCounterBellServiceInfo()).createOrOpen();
         dbServiceInfo.put(serviceInfo.getName(),serviceInfo);
         db.commit();
+        logger.info("Created entry : container '"+containerIdentifier+"' service '"+serviceInfo.getName()+"' with "+serviceInfo.getServiceInfo().size()+" parameters.");
     }
 
     @Override
@@ -38,6 +43,7 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
         HTreeMap<String,CounterBellServiceInfo> dbServiceInfo = db.hashMap(containerIdentifier, Serializer.STRING, new SerializerCounterBellServiceInfo()).createOrOpen();
         dbServiceInfo.put(serviceInfo.getName(),serviceInfo);
         db.commit();
+        logger.info("Updated entry : container '"+containerIdentifier+"' service '"+serviceInfo.getName()+"' with "+serviceInfo.getServiceInfo().size()+" parameters.");
     }
 
     @Override
@@ -45,6 +51,7 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
         HTreeMap<String,CounterBellServiceInfo> dbServiceInfo = db.hashMap(containerIdentifier, Serializer.STRING, new SerializerCounterBellServiceInfo()).createOrOpen();
         dbServiceInfo.remove(serviceName);
         db.commit();
+        logger.info("Deleted entry : container '"+containerIdentifier+"' service '"+serviceName+"'");
     }
 
     @Override
@@ -62,7 +69,8 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
     @Override
     public void backup(OutputStream out) throws IOException {
         synchronized (this){
-            IOUtils.copyLarge(new FileInputStream(dbFile),out);
+            long copied = IOUtils.copyLarge(new FileInputStream(dbFile),out);
+            logger.info("Backup of repository : wrote "+copied+" bytes to filesystem.");
         }
     }
 
@@ -70,8 +78,9 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
     public void restore(InputStream in) throws IOException {
         synchronized (this){
             db.close();
-            IOUtils.copyLarge(in,new FileOutputStream(dbFile));
+            long copied = IOUtils.copyLarge(in,new FileOutputStream(dbFile));
             initializeDatabase(dbFile);
+            logger.info("Restore database : read "+copied+" bytes from backup file.");
         }
     }
 
@@ -82,6 +91,7 @@ public class MapDBCounterBellServiceInfoRepository extends CounterBellServiceInf
     }
 
     public void clean(){
+        logger.info("Closing database.");
         db.close();
     }
 
